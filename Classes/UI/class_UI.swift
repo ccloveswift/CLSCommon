@@ -11,14 +11,14 @@ import UIKit
 
 public class class_UI: NSObject {
     
-    public static func e_gotW750(_ w: CGFloat) -> CGFloat {
+    public static func e_GotW750(_ w: CGFloat) -> CGFloat {
         
         let x = UIScreen.main.bounds.width * (w / 750.0);
         
         return x;
     }
     
-    public static func e_gotH1334(_ h: CGFloat) -> CGFloat {
+    public static func e_GotH1334(_ h: CGFloat) -> CGFloat {
         
         let x = UIScreen.main.bounds.width * (h / 1334.0);
         
