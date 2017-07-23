@@ -18,9 +18,6 @@ Pod::Spec.new do |s|
   
   s.author             = { "TT" => "654974034@qq.com" }
   
-  
-  
-
   s.source       = { :git => "https://github.com/ccloveswift/CLSCommon.git", :tag => "#{s.version}" }
 
   # s.source_files  = "Classes", "Classes/**/*.{swift}"
@@ -34,7 +31,6 @@ Pod::Spec.new do |s|
 
   # s.preserve_paths = "FilesToSave", "MoreFilesToSave"
 
-  s.framework = "UIKit"
   # s.framework  = "SomeFramework"
   # s.frameworks = "SomeFramework", "AnotherFramework"
 
@@ -49,15 +45,14 @@ Pod::Spec.new do |s|
   s.default_subspec     = 'Core'
 
   s.subspec 'Core' do |ss|
+    ss.frameworks          = "UIKit"
     ss.source_files        = "Classes/Core/**/*.{swift}"
     # ss.exclude_files       = "**/__tests__/*", "IntegrationTests/*"
-    ss.frameworks          = "UIKit"
     # ss.libraries           = "stdc++"
     # ss.pod_target_xcconfig = { "CLANG_CXX_LANGUAGE_STANDARD" => "c++14" }
   end
   s.subspec 'UI' do |ss|
     ss.dependency       'CLSCommon/Core'
     ss.source_files        = "Classes/UI/**/*.{swift}"
-    ss.frameworks          = "UIKit"
   end
 end
