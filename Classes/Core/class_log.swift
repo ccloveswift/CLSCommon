@@ -43,6 +43,8 @@ public class class_log {
     
     public var mLogBlock: ((_ level: logLevel, _ format: String, _ args: CVarArg...) ->Void)?
     
+    public var mLogPrinter: class_log_print?
+    
     private init()
     {
         
@@ -59,5 +61,56 @@ public class class_log {
             
             block(level, format, args)
         }
+        
+        if let printer = mLogPrinter {
+            
+            printer.fCLSLog(level, format, args)
+        }
+    }
+}
+
+public class class_log_print {
+    
+    private var mDateFormatter: DateFormatter?
+    
+    private func sGotHead() -> String {
+        
+        if mDateFormatter == nil {
+            
+            let formatter = DateFormatter.init()
+            formatter.dateFormat = "[MMMM dd,yyyy HH:mm:ss.SSS]"
+            mDateFormatter = formatter
+        }
+        
+        let date = Date.init()
+        let str = mDateFormatter!.string(from: date)
+        return str
+    }
+    
+    private func sGot2Head(_ level: class_log.logLevel) -> String {
+        
+        switch level {
+        case .debug:
+            return "[---Debug---]"
+        case .error:
+            return "[---Error---]"
+        case .warn:
+            return "[---Warn---]"
+        case .info:
+            return "[---Info---]"
+        default:
+            return ""
+        }
+    }
+    
+    public init() {
+        
+    }
+    
+    func fCLSLog(_ level: class_log.logLevel, _ format: String, _ args: CVarArg...)
+    {
+//        #if DEBUG
+            Swift.print(self.sGotHead(), self.sGot2Head(level), String.init(format: format, args), separator:" ", terminator: "\n")
+//        #endif
     }
 }

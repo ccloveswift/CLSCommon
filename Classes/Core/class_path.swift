@@ -34,12 +34,12 @@ public class class_path: NSObject {
             do {
                 
                 try FileManager.default.createDirectory(atPath: url.relativePath, withIntermediateDirectories: true, attributes: nil)
-                print("创建文件夹 \(url) [成功!]")
+                CLSLogInfo("创建文件夹 \(url) [成功!]")
                 bRet = true
             }
             catch let err {
                 
-                print("创建文件夹 \(url) [失败!:\(err)]")
+                CLSLogError("创建文件夹 \(url) [失败!:\(err)]")
             }
         }
         
@@ -56,11 +56,11 @@ public class class_path: NSObject {
         let bRet = FileManager.default.fileExists(atPath: url.relativePath)
         if bRet {
             
-            print("查找文件 \(url.relativePath) 【有这个东东】")
+            CLSLogInfo("查找文件 \(url.relativePath) 【有这个东东】")
         }
         else {
             
-            print("查找文件 \(url.relativePath) 【没有查到】")
+            CLSLogInfo("查找文件 \(url.relativePath) 【没有查到】")
         }
         
         return bRet
@@ -82,7 +82,7 @@ public class class_path: NSObject {
                 
             } catch let err {
                 
-                printErr("删除文件失败 \(err)")
+                CLSLogError("删除文件失败 \(err)")
                 bRet = false
             }
         }
