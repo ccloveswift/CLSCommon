@@ -16,7 +16,7 @@ public protocol UINavigationAnimationInterface: NSObjectProtocol {
 
 extension UINavigationController {
     
-    static var e_NavVC: UINavigationController? {
+    public class var e_NavVC: UINavigationController? {
         
         get {
             

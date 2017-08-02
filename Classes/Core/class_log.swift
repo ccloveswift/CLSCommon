@@ -28,7 +28,7 @@ public func CLSLogDebug(_ format: String, _ args: CVarArg...)
     class_log.instance.fCLSLog(class_log.logLevel.debug, format, args)
 }
 
-public class class_log {
+public class class_log : NSObject {
     
     public enum logLevel {
         case silent
@@ -45,9 +45,9 @@ public class class_log {
     
     public var mLogPrinter: class_log_print?
     
-    private init()
+    private override init()
     {
-        
+        super.init()
     }
     
     deinit
