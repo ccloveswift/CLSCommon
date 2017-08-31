@@ -91,6 +91,7 @@ import UIKit
 import Accelerate
 
 public extension UIImage {
+    
     public func e_ApplyLightEffect() -> UIImage? {
         return e_ApplyBlurWithRadius(30, tintColor: UIColor(white: 1.0, alpha: 0.3), saturationDeltaFactor: 1.8)
     }
@@ -278,5 +279,55 @@ public extension UIImage {
         UIGraphicsEndImageContext()
         
         return outputImage
+    }
+}
+
+public extension UIImage {
+    
+    public func e_EqualRatioToSize(size: CGSize, usingSizeDrawContext: Bool) -> UIImage? {
+        
+        var width: CGFloat = CGFloat(self.cgImage!.width)
+        var height: CGFloat = CGFloat(self.cgImage!.height)
+        
+        let verticalRadio = size.height * 1.0 / height;
+        let horizontalRadio = size.width * 1.0 / width;
+        
+        var radio: CGFloat = 1.0;
+        if verticalRadio > 1 && horizontalRadio > 1 {
+            
+            radio = verticalRadio > horizontalRadio ? horizontalRadio : verticalRadio;
+        }
+        else {
+            
+            radio = verticalRadio < horizontalRadio ? verticalRadio : horizontalRadio;
+        }
+        
+        width = CGFloat(Int(width * radio));
+        height = CGFloat(Int(height * radio));
+        
+        // 创建一个bitmap的context
+        // 并把它设置成为当前正在使用的context
+        if (usingSizeDrawContext) {
+            
+            UIGraphicsBeginImageContext(size);
+            // 绘制改变大小的图片
+            let xPos = (size.width - width) / 2;
+            let yPos = (size.height - height) / 2;
+            self .draw(in: CGRect(x: xPos, y: yPos, width: width, height: height))
+        }
+        else {
+            
+            UIGraphicsBeginImageContext(CGSize(width: width, height: height))
+            self .draw(in: CGRect(x: 0, y: 0, width: width, height: height))
+        }
+        
+        // 从当前context中创建一个改变大小后的图片
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        
+        // 使当前的context出堆栈
+        UIGraphicsEndImageContext();
+        
+        // 返回新的改变大小后的图片
+        return scaledImage;
     }
 }
