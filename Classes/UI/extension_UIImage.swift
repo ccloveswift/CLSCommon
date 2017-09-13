@@ -92,6 +92,10 @@ import Accelerate
 
 public extension UIImage {
     
+    public func e_ApplyHighPenetrationBlur() -> UIImage? {
+        
+        return e_ApplyBlurWithRadius(8, tintColor: UIColor(white: 1, alpha: 0.1), saturationDeltaFactor: 1.8)
+    }
     public func e_ApplyLightEffect() -> UIImage? {
         return e_ApplyBlurWithRadius(30, tintColor: UIColor(white: 1.0, alpha: 0.3), saturationDeltaFactor: 1.8)
     }
