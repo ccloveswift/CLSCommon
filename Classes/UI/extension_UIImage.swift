@@ -135,15 +135,15 @@ public extension UIImage {
     public func e_ApplyBlurWithRadius(_ blurRadius: CGFloat, tintColor: UIColor?, saturationDeltaFactor: CGFloat, maskImage: UIImage? = nil) -> UIImage? {
         // Check pre-conditions.
         if (size.width < 1 || size.height < 1) {
-            print("*** error: invalid size: \(size.width) x \(size.height). Both dimensions must be >= 1: \(self)")
+            CLSLogInfo("*** error: invalid size: \(size.width) x \(size.height). Both dimensions must be >= 1: \(self)")
             return nil
         }
         guard let cgImage = self.cgImage else {
-            print("*** error: image must be backed by a CGImage: \(self)")
+            CLSLogInfo("*** error: image must be backed by a CGImage: \(self)")
             return nil
         }
         if maskImage != nil && maskImage!.cgImage == nil {
-            print("*** error: maskImage must be backed by a CGImage: \(maskImage!)")
+            CLSLogInfo("*** error: maskImage must be backed by a CGImage: \(maskImage!)")
             return nil
         }
         
@@ -288,6 +288,13 @@ public extension UIImage {
 
 public extension UIImage {
     
+    
+    /// 压缩图片
+    ///
+    /// - Parameters:
+    ///   - size: 大小
+    ///   - usingSizeDrawContext: 。。。
+    /// - Returns: 图片
     public func e_EqualRatioToSize(size: CGSize, usingSizeDrawContext: Bool) -> UIImage? {
         
         var width: CGFloat = CGFloat(self.cgImage!.width)
@@ -333,5 +340,28 @@ public extension UIImage {
         
         // 返回新的改变大小后的图片
         return scaledImage;
+    }
+
+    
+    /// 裁剪图片
+    ///
+    /// - Parameter rect: 大小 （绝对值）
+    /// - Returns: 图片
+    public func e_RectImageOfRect(rect: CGRect, scale: CGFloat) -> UIImage? {
+        
+        let sourceImageRef = self.cgImage
+        
+        let newRect = CGRect.init(x: rect.origin.x * scale, y: rect.origin.y * scale, width: rect.size.width * scale, height: rect.size.height * scale)
+        let newImageRef = sourceImageRef?.cropping(to: newRect)
+        
+        if let imgRef = newImageRef {
+        
+            return UIImage.init(cgImage: imgRef, scale: self.scale, orientation: self.imageOrientation)
+        }
+        else {
+            
+            assert(false)
+            return self
+        }
     }
 }

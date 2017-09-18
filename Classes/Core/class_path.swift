@@ -15,7 +15,7 @@ public class class_path: NSObject {
     ///
     /// - Parameter path: "/User/xxxx"
     /// - Returns: true = 成功
-    class func sCreateDirectory(path: String) -> Bool {
+    public class func sCreateDirectory(path: String) -> Bool {
         
         let url = URL.init(fileURLWithPath: path)
         return class_path.sCreateDirectory(url: url)
@@ -26,7 +26,7 @@ public class class_path: NSObject {
     ///
     /// - Parameter url: "/User/xxxxx"
     /// - Returns: true=成功
-    class func sCreateDirectory(url: URL) -> Bool {
+    public class func sCreateDirectory(url: URL) -> Bool {
         
         var bRet = false
         if class_path.sIsDirectoryOrFileExists(url) == false {
@@ -51,7 +51,7 @@ public class class_path: NSObject {
     ///
     /// - Parameter url: 路径 "file:///User/xxx"
     /// - Returns: true = 有
-    class func sIsDirectoryOrFileExists(_ url: URL) -> Bool {
+    public class func sIsDirectoryOrFileExists(_ url: URL) -> Bool {
         
         let bRet = FileManager.default.fileExists(atPath: url.relativePath)
         if bRet {
@@ -71,7 +71,7 @@ public class class_path: NSObject {
     ///
     /// - Parameter url: 路径 “file:///User/xxx”
     /// - Returns: true = 成功
-    class func sRemoveDirectoryOrFile(_ url: URL) -> Bool {
+    public class func sRemoveDirectoryOrFile(_ url: URL) -> Bool {
         
         var bRet = true
         if class_path.sIsDirectoryOrFileExists(url) {

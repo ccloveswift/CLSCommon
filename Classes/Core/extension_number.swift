@@ -30,4 +30,9 @@ extension CGFloat {
         
         return Int(self)
     }
+    
+    public func e_IntCGFloat() -> CGFloat {
+        
+        return self.e_Int().e_CGFloat()
+    }
 }
