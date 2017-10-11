@@ -313,8 +313,8 @@ public extension UIImage {
             radio = verticalRadio < horizontalRadio ? verticalRadio : horizontalRadio;
         }
         
-        width = CGFloat(Int(width * radio));
-        height = CGFloat(Int(height * radio));
+        width = CGFloat(width * radio);
+        height = CGFloat(height * radio);
         
         // 创建一个bitmap的context
         // 并把它设置成为当前正在使用的context
@@ -363,5 +363,108 @@ public extension UIImage {
             assert(false)
             return self
         }
+    }
+
+    /// 矫正图片
+    ///
+    /// - Returns: 返回一张图片
+    public func e_FixedOrientation() -> UIImage {
+        
+        return e_Rotation(imgOrientation: self.imageOrientation)
+    }
+    
+    public func e_Rotation(imgOrientation: UIImageOrientation) -> UIImage {
+        
+        let imageOrientation = imgOrientation
+        if imageOrientation == .up {
+            
+            return self
+        }
+        
+        let imgRef = self.cgImage
+        let width = CGFloat(imgRef!.width)
+        let height = CGFloat(imgRef!.height)
+        var transform = CGAffineTransform.identity
+        var bounds = CGRect.init(x: 0, y: 0, width: width, height: height)
+        let scaleRatio:CGFloat = 1
+        var boundHeight: CGFloat = 0
+        let orient = imageOrientation;
+        switch orient {
+        case .up: //EXIF = 1
+            transform = CGAffineTransform.identity
+        case .upMirrored: //EXIF = 2
+            transform = CGAffineTransform(translationX: width, y: 0.0);
+            transform = transform.scaledBy(x: -1.0, y: 1.0)
+        case .down: //EXIF = 3
+            transform = CGAffineTransform(translationX: width, y: height);
+            transform = transform.rotated(by: CGFloat(M_PI))
+        case .downMirrored: //EXIF = 4
+            transform = CGAffineTransform(translationX: 0.0, y: height);
+            transform = transform.scaledBy(x: 1.0, y: -1.0)
+        case .leftMirrored: //EXIF = 5
+            boundHeight = bounds.size.height;
+            bounds.size.height = bounds.size.width;
+            bounds.size.width = boundHeight;
+            transform = CGAffineTransform(translationX: height, y: width);
+            transform = transform.scaledBy(x: -1.0, y: 1.0)
+            transform = transform.rotated(by: CGFloat(3.0 * M_PI / 2.0))
+        case .left: //EXIF = 6
+            boundHeight = bounds.size.height;
+            bounds.size.height = bounds.size.width;
+            bounds.size.width = boundHeight;
+            transform = CGAffineTransform(translationX: 0.0, y: width);
+            transform = transform.rotated(by: CGFloat(3.0 * M_PI / 2.0))
+        case .rightMirrored: //EXIF = 7
+            boundHeight = bounds.size.height;
+            bounds.size.height = bounds.size.width;
+            bounds.size.width = boundHeight;
+            transform = CGAffineTransform(scaleX: -1.0, y: 1.0);
+            transform = transform.rotated(by: CGFloat(M_PI / 2.0))
+        case .right: //EXIF = 8
+            boundHeight = bounds.size.height;
+            bounds.size.height = bounds.size.width;
+            bounds.size.width = boundHeight;
+            transform = CGAffineTransform(translationX: height, y: 0.0);
+            transform = transform.rotated(by: CGFloat(M_PI / 2.0))
+        default:
+            break
+        }
+        
+        UIGraphicsBeginImageContext(bounds.size);
+        let context: CGContext = UIGraphicsGetCurrentContext()!
+        if (orient == .right || orient == .left) {
+            
+            context.scaleBy(x: -scaleRatio, y: scaleRatio)
+            context.translateBy(x: -height, y: 0)
+        }
+        else {
+            
+            context.scaleBy(x: scaleRatio, y: -scaleRatio)
+            context.translateBy(x: 0, y: -height)
+        }
+        context.concatenate(transform)
+        context.draw(imgRef!, in: CGRect.init(x: 0, y: 0, width: width, height: height))
+        
+        let imageCopy = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        return imageCopy!
+    }
+
+    public func e_RatioToSize(size: CGSize) -> UIImage? {
+        
+        // 创建一个bitmap的context
+        // 并把它设置成为当前正在使用的context
+        UIGraphicsBeginImageContext(size)
+        self .draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        
+        // 从当前context中创建一个改变大小后的图片
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        
+        // 使当前的context出堆栈
+        UIGraphicsEndImageContext();
+        
+        // 返回新的改变大小后的图片
+        return scaledImage;
     }
 }
