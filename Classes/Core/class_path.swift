@@ -163,4 +163,39 @@ public class class_path: NSObject {
         
         return FileManager.default.createFile(atPath: atPath, contents: data, attributes: nil)
     }
+    
+    /// 获取当前路径下所有文件，不递归，不反回文件夹
+    ///
+    /// - Parameter dirPath: 路径
+    /// - Returns: 数组
+    public class func sGetAllFiles(_ dirPath: String) -> [String:String]? {
+        
+        var filePaths: [String:String]? = [String:String]()
+        
+        do {
+            
+            let array = try FileManager.default.contentsOfDirectory(atPath: dirPath)
+            
+            for fileName in array {
+                
+                var isDir: ObjCBool = true
+                let fullPath = "\(dirPath)/\(fileName)"
+                
+                if FileManager.default.fileExists(atPath: fullPath, isDirectory: &isDir) {
+                    
+                    if !isDir.boolValue {
+                        
+                        filePaths?[fileName] = fullPath
+                    }
+                }
+            }
+        } catch let error as NSError {
+            
+            filePaths = nil
+            print("get file path error: \(error)")
+            assert(false)
+        }
+        
+        return filePaths
+    }
 }
