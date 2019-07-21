@@ -42,8 +42,8 @@ public class class_UI: NSObject {
     public static func e_StringSize(text: String, font: UIFont) -> CGSize {
         
         let font = font
-        let fontAttributes = [NSFontAttributeName: font]
-        let size = (text as NSString).size(attributes: fontAttributes)
+        let fontAttributes = [NSAttributedString.Key.font: font]
+        let size = (text as NSString).size(withAttributes: fontAttributes)
         return size
     }
 }

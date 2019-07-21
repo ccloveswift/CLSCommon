@@ -12,7 +12,7 @@ public class class_UIButton: UIButton {
     
     public typealias tClickBlock = ((_ sender: class_UIButton) -> Void)?
     
-    public var mClickBlock: tClickBlock
+    public var mClickBlock: tClickBlock = nil
     
     public override init(frame: CGRect) {
         
@@ -31,7 +31,7 @@ public class class_UIButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func onClick(sender: class_UIButton) {
+    @objc func onClick(sender: class_UIButton) {
         
         if let block = mClickBlock {
             

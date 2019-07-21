@@ -29,7 +29,7 @@ public class class_FPS {
     public init() {
         
         link = CADisplayLink.init(target: self, selector: #selector(self.didTick(link:)))
-        link?.add(to: RunLoop.current, forMode: .commonModes)
+        link?.add(to: RunLoop.current, forMode: RunLoop.Mode.common)
     }
     
     deinit{

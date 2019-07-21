@@ -373,7 +373,7 @@ public extension UIImage {
         return e_Rotation(imgOrientation: self.imageOrientation)
     }
     
-    public func e_Rotation(imgOrientation: UIImageOrientation) -> UIImage {
+    public func e_Rotation(imgOrientation: UIImage.Orientation) -> UIImage {
         
         let imageOrientation = imgOrientation
         if imageOrientation == .up {
