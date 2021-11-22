@@ -10,7 +10,7 @@ import Foundation
 
 public func CLSLogError(_ format: String, file: String = #file, method: String = #function, line: Int = #line)
 {
-    CLSLogError(format, file, method, line, "")
+    class_log.instance.fCLSLog(class_log.logLevel.error, format, file, method, line, "")
 }
 public func CLSLogError(_ format: String, file: String = #file, method: String = #function, line: Int = #line, _ args: CVarArg...)
 {
@@ -19,7 +19,7 @@ public func CLSLogError(_ format: String, file: String = #file, method: String =
 
 public func CLSLogWarn(_ format: String, file: String = #file, method: String = #function, line: Int = #line)
 {
-    CLSLogWarn(format, file, method, line, "")
+    class_log.instance.fCLSLog(class_log.logLevel.warn, format, file, method, line, "")
 }
 public func CLSLogWarn(_ format: String, file: String = #file, method: String = #function, line: Int = #line, _ args: CVarArg...)
 {
@@ -28,7 +28,7 @@ public func CLSLogWarn(_ format: String, file: String = #file, method: String = 
 
 public func CLSLogInfo(_ format: String, file: String = #file, method: String = #function, line: Int = #line)
 {
-    CLSLogInfo(format, file, method, line, "")
+    class_log.instance.fCLSLog(class_log.logLevel.info, format, file, method, line, "")
 }
 public func CLSLogInfo(_ format: String, file: String = #file, method: String = #function, line: Int = #line, _ args: CVarArg...)
 {
@@ -37,14 +37,14 @@ public func CLSLogInfo(_ format: String, file: String = #file, method: String = 
 
 public func CLSLogDebug(_ format: String, file: String = #file, method: String = #function, line: Int = #line)
 {
-    CLSLogDebug(format, file, method, line, "")
+    class_log.instance.fCLSLog(class_log.logLevel.debug, format, file, method, line, "")
 }
 public func CLSLogDebug(_ format: String, file: String = #file, method: String = #function, line: Int = #line, _ args: CVarArg...)
 {
     class_log.instance.fCLSLog(class_log.logLevel.debug, format, file, method, line, args)
 }
 
-public class class_log : NSObject {
+public class class_log {
     
     public enum logLevel {
         case silent
@@ -55,17 +55,14 @@ public class class_log : NSObject {
         case verbose
     }
     
-    public static let instance = class_log.init()
+    public static let instance = class_log()
     
     public var mLogBlock: ((_ level: logLevel, _ format: String, _ file: String, _ method: String, _ line: Int, _ args: CVarArg...) ->Void)?
     
     public var mLogPrinter: class_log_print?
     
-    private override init()
-    {
-        super.init()
-    }
-    
+    private init()
+    {}
     deinit
     {
         mLogBlock = nil
