@@ -8,24 +8,40 @@
 
 import Foundation
 
-public func CLSLogError(_ format: String, _ args: CVarArg...)
+public func CLSLogError(_ format: String, file: String = #file, method: String = #function, line: Int = #line)
 {
-    class_log.instance.fCLSLog(class_log.logLevel.error, format, args)
+    CLSLogError(format, file, method, line, "")
+}
+public func CLSLogError(_ format: String, file: String = #file, method: String = #function, line: Int = #line, _ args: CVarArg...)
+{
+    class_log.instance.fCLSLog(class_log.logLevel.error, format, file, method, line, args)
 }
 
-public func CLSLogWarn(_ format: String, _ args: CVarArg...)
+public func CLSLogWarn(_ format: String, file: String = #file, method: String = #function, line: Int = #line)
 {
-    class_log.instance.fCLSLog(class_log.logLevel.warn, format, args)
+    CLSLogWarn(format, file, method, line, "")
+}
+public func CLSLogWarn(_ format: String, file: String = #file, method: String = #function, line: Int = #line, _ args: CVarArg...)
+{
+    class_log.instance.fCLSLog(class_log.logLevel.warn, format, file, method, line, args)
 }
 
-public func CLSLogInfo(_ format: String, _ args: CVarArg...)
+public func CLSLogInfo(_ format: String, file: String = #file, method: String = #function, line: Int = #line)
 {
-    class_log.instance.fCLSLog(class_log.logLevel.info, format, args)
+    CLSLogInfo(format, file, method, line, "")
+}
+public func CLSLogInfo(_ format: String, file: String = #file, method: String = #function, line: Int = #line, _ args: CVarArg...)
+{
+    class_log.instance.fCLSLog(class_log.logLevel.info, format, file, method, line, args)
 }
 
-public func CLSLogDebug(_ format: String, _ args: CVarArg...)
+public func CLSLogDebug(_ format: String, file: String = #file, method: String = #function, line: Int = #line)
 {
-    class_log.instance.fCLSLog(class_log.logLevel.debug, format, args)
+    CLSLogDebug(format, file, method, line, "")
+}
+public func CLSLogDebug(_ format: String, file: String = #file, method: String = #function, line: Int = #line, _ args: CVarArg...)
+{
+    class_log.instance.fCLSLog(class_log.logLevel.debug, format, file, method, line, args)
 }
 
 public class class_log : NSObject {
@@ -41,7 +57,7 @@ public class class_log : NSObject {
     
     public static let instance = class_log.init()
     
-    public var mLogBlock: ((_ level: logLevel, _ format: String, _ args: CVarArg...) ->Void)?
+    public var mLogBlock: ((_ level: logLevel, _ format: String, _ file: String, _ method: String, _ line: Int, _ args: CVarArg...) ->Void)?
     
     public var mLogPrinter: class_log_print?
     
@@ -55,16 +71,17 @@ public class class_log : NSObject {
         mLogBlock = nil
     }
     
-    public func fCLSLog(_ level: logLevel, _ format: String, _ args: CVarArg...)
+    public func fCLSLog(_ level: logLevel, _ format: String, _ file: String, _ method: String, _ line: Int, _ args: CVarArg...)
     {
         if let block = mLogBlock {
             
-            block(level, format, args)
+            block(level, format, file, method, line, args)
         }
         
         if let printer = mLogPrinter {
             
-            printer.fCLSLog(level, format, args)
+            printer.fCLSLog(level, format, file, method, line, args)
+            
         }
     }
 }
@@ -99,7 +116,7 @@ public class class_log_print {
         case .info:
             return "[---Info---]"
         default:
-            return ""
+            return "[---S/N---]"
         }
     }
     
@@ -107,10 +124,12 @@ public class class_log_print {
         
     }
     
-    func fCLSLog(_ level: class_log.logLevel, _ format: String, _ args: CVarArg...)
+    func fCLSLog(_ level: class_log.logLevel, _ format: String, _ file: String, _ method: String, _ line: Int, _ args: CVarArg...)
     {
-//        #if DEBUG
-            Swift.print(self.sGotHead(), self.sGot2Head(level), String.init(format: format, args), separator:" ", terminator: "\n")
-//        #endif
+        let fn = "[\((file as NSString).lastPathComponent):\(line)]"
+        Swift.print(self.sGotHead(),
+                    fn,
+                    self.sGot2Head(level),
+                    String.init(format: format, args))
     }
 }

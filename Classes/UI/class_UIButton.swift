@@ -14,15 +14,14 @@ public class class_UIButton: UIButton {
     
     public var mClickBlock: tClickBlock = nil
     
-    public override init(frame: CGRect) {
-        
+    public init(_ frame: CGRect) {
         super.init(frame: frame)
-        
         self.addTarget(self, action: #selector(onClick(sender:)), for: .touchUpInside)
     }
     
     deinit {
         
+        self.mClickBlock = nil
         self.removeTarget(self, action: nil, for: .allTouchEvents)
         CLSLogInfo("deinit class_UIButton")
     }
