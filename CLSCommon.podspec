@@ -31,4 +31,8 @@ Pod::Spec.new do |s|
     ss.dependency       'CLSCommon/Core'
     ss.source_files        = "Classes/UI/**/*.{swift}"
   end
+  s.subspec 'VideoCoder' do |ss|
+    ss.dependency       'CLSCommon/Core'
+    ss.source_files        = "Classes/VideoCoder/**/*.{swift}"
+  end
 end
