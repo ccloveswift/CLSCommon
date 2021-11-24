@@ -273,6 +273,7 @@ public class class_videoDecoder {
             if _cacheSampleBufferFrameIndex >= wantFrameIndex {
                 // 需要返回这帧数据
                 _cacheMTLTexture = getMTLTexture(buffer)
+                break
             }
         }
         
