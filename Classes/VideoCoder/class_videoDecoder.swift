@@ -55,6 +55,14 @@ public class class_videoDecoder {
     
     deinit {
         CLSLogInfo("deinit")
+        _asset = nil
+        _track = nil
+        _reader = nil
+        _readerTrackOutput = nil
+        _cacheMTLTexture = nil
+        _cacheCVMetalTextureCache = nil
+        _cacheCMSampleBuffer = nil
+        _cacheCVMetalTexture = nil
     }
     
     private func createAsset() {
@@ -190,6 +198,7 @@ public class class_videoDecoder {
         let w = CVPixelBufferGetWidth(imgBuff)
         let h = CVPixelBufferGetHeight(imgBuff)
         
+        _cacheCVMetalTexture = nil
         _cacheCVMetalTexture = withUnsafeMutablePointer(to: &_cacheCVMetalTexture) { Ptr in
 
             let ret = CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, textureCache, imgBuff, nil, .bgra8Unorm, w, h, 0, Ptr)
