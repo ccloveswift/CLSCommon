@@ -37,7 +37,7 @@ public class class_videoDecoder {
     private var _oneFrameTimeHalf: Double
     private var _fps: Double
     
-    init(_ uri: URL, _ size: CGSize) {
+    public init(_ uri: URL, _ size: CGSize) {
         _uri = uri
         _wantSize = size
         _width = 0;
