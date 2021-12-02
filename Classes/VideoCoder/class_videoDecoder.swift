@@ -262,7 +262,6 @@ public class class_videoDecoder {
             // 可以读取
             let obuffer = rto.copyNextSampleBuffer()
             guard let buffer = obuffer else {
-                assert(false)
                 break
             }
             
