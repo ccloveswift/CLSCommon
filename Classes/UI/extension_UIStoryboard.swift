@@ -9,11 +9,9 @@
 import Foundation
 import UIKit
 
-extension UIViewController {
+extension UIStoryboard {
     
     public class func e_CreateVC(storyboard:String, id: String) -> UIViewController {
-        
-        let viewController = UIStoryboard.init(name: storyboard, bundle: nil).instantiateViewController(withIdentifier: id)
-        return viewController;
+        return UIStoryboard.init(name: storyboard, bundle: nil).instantiateViewController(withIdentifier: id)
     }
 }
