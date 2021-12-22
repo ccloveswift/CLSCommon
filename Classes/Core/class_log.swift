@@ -83,7 +83,7 @@ public class class_log {
     }
 }
 
-public class class_log_print {
+open class class_log_print {
     
     private var mDateFormatter: DateFormatter?
     
@@ -121,7 +121,7 @@ public class class_log_print {
         
     }
     
-    func fCLSLog(_ level: class_log.logLevel, _ format: String, _ file: String, _ method: String, _ line: Int, _ args: CVarArg...)
+    open func fCLSLog(_ level: class_log.logLevel, _ format: String, _ file: String, _ method: String, _ line: Int, _ args: CVarArg...)
     {
         let fn = "[\((file as NSString).lastPathComponent):\(line)]"
         Swift.print(self.sGotHead(),
